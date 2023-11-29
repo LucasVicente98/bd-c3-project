@@ -80,7 +80,7 @@ O projeto faz uso das seguintes bibliotecas:
 3. Navegue até o diretório do projeto:
 
    ```bash
-   cd nome-do-repositorio
+   cd bd-c3-project
    ```
 
 4. Instale as dependências:
