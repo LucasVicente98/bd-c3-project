@@ -1,4 +1,4 @@
-# Sistema de Gerenciamento de Armazém Logístico 📦🚀
+# Sistema de Gerenciamento de Armazém Logístico 📦
 
 ## Descrição do Projeto
 
