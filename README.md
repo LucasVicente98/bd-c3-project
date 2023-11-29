@@ -74,7 +74,7 @@ O projeto faz uso das seguintes bibliotecas:
 2. Clone o repositório:
 
    ```bash
-   git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/LucasVicente98/bd-c3-project.git)
+   git clone https://github.com/LucasVicente98/bd-c3-project.git
    ```
 
 3. Navegue até o diretório do projeto:
