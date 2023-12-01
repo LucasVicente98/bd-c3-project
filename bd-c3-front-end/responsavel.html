@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsável Frontend</title>
+</head>
+<body>
+
+    <h1>Responsáveis</h1>
+
+    <button onclick="getResponsaveis()">Listar Responsáveis</button>
+
+    <div id="responsaveisList"></div>
+
+    <h2>Criar Novo Responsável</h2>
+
+    <form onsubmit="postResponsavel(event)">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+        <br>
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" required>
+        <br>
+        <button type="submit">Criar Responsável</button>
+    </form>
+
+    <script>
+        const apiUrl = 'http://localhost:4000/responsavel';
+
+        function getResponsaveis() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(responsaveis => {
+                    const responsaveisList = document.getElementById('responsaveisList');
+                    responsaveisList.innerHTML = '<h3>Lista de Responsáveis</h3>';
+                    
+                    responsaveis.forEach(responsavel => {
+                        const responsavelDiv = document.createElement('div');
+                        responsavelDiv.innerHTML = `
+                            <p><strong>Nome:</strong> ${responsavel.nome}</p>
+                            <p><strong>Telefone:</strong> ${responsavel.telefone}</p>
+                            <button onclick="editResponsavel('${responsavel._id}')">Editar</button>
+                            <button onclick="deleteResponsavel('${responsavel._id}')">Excluir</button>
+                            <hr>
+                        `;
+                        responsaveisList.appendChild(responsavelDiv);
+                    });
+                })
+                .catch(error => console.error('Erro ao obter responsáveis:', error));
+        }
+
+        function postResponsavel(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+
+            const newResponsavel = {
+                nome,
+                telefone,
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newResponsavel),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Exibir mensagem de sucesso no HTML, se desejar
+                alert('Novo Responsável criado com sucesso!');
+                // Atualizar a lista de responsáveis após a criação
+                getResponsaveis();
+            })
+            .catch(error => console.error('Erro ao criar responsável:', error));
+        }
+
+        function editResponsavel(responsavelId) {
+            const newNome = prompt('Digite o novo nome para o responsável:');
+            const newTelefone = prompt('Digite o novo telefone para o responsável:');
+
+            if (newNome !== null && newTelefone !== null) {
+                const updatedResponsavel = {
+                    nome: newNome,
+                    telefone: newTelefone,
+                };
+
+                fetch(`${apiUrl}/${responsavelId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedResponsavel),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Responsável atualizado com sucesso!');
+                    getResponsaveis();
+                })
+                .catch(error => console.error('Erro ao atualizar responsável:', error));
+            }
+        }
+
+        function deleteResponsavel(responsavelId) {
+            const confirmDelete = confirm('Tem certeza de que deseja excluir este responsável?');
+
+            if (confirmDelete) {
+                fetch(`${apiUrl}/${responsavelId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Responsável excluído com sucesso!');
+                    getResponsaveis();
+                })
+                .catch(error => console.error('Erro ao excluir responsável:', error));
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armazém Frontend</title>
+</head>
+<body>
+
+    <h1>Armazéns</h1>
+
+    <button onclick="getArmazens()">Listar Armazéns</button>
+
+    <div id="armazensList"></div>
+
+    <h2>Criar Novo Armazém</h2>
+
+    <form onsubmit="postArmazem(event)">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+        <br>
+        <label for="localizacao">Localização:</label>
+        <input type="text" id="localizacao" required>
+        <br>
+        <label for="capacidade">Capacidade:</label>
+        <input type="number" id="capacidade" required>
+        <br>
+        <label for="responsavelId">ID do Responsável:</label>
+        <input type="text" id="responsavelId" required>
+        <br>
+        <button type="submit">Criar Armazém</button>
+    </form>
+
+    <script>
+        const apiUrl = 'http://localhost:4000/armazem';
+
+        function getArmazens() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(armazens => {
+                    const armazensList = document.getElementById('armazensList');
+                    armazensList.innerHTML = '<h3>Lista de Armazéns</h3>';
+                    
+                    armazens.forEach(armazem => {
+                        const armazemDiv = document.createElement('div');
+                        armazemDiv.innerHTML = `
+                            <p><strong>Nome:</strong> ${armazem.nome}</p>
+                            <p><strong>Localização:</strong> ${armazem.localizacao}</p>
+                            <p><strong>Capacidade:</strong> ${armazem.capacidade}</p>
+                            <p><strong>Responsável:</strong> ${armazem.responsavel ? armazem.responsavel.nome : 'Sem Responsável'}</p>
+                            <button onclick="editArmazem('${armazem._id}')">Editar</button>
+                            <button onclick="deleteArmazem('${armazem._id}')">Excluir</button>
+                            <hr>
+                        `;
+                        armazensList.appendChild(armazemDiv);
+                    });
+                })
+                .catch(error => console.error('Erro ao obter armazéns:', error));
+        }
+
+        function postArmazem(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const localizacao = document.getElementById('localizacao').value;
+            const capacidade = document.getElementById('capacidade').value;
+            const responsavelId = document.getElementById('responsavelId').value;
+
+            const newArmazem = {
+                nome,
+                localizacao,
+                capacidade,
+                responsavel: responsavelId,
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newArmazem),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Exibir mensagem de sucesso no HTML, se desejar
+                alert('Novo Armazém criado com sucesso!');
+                // Atualizar a lista de armazéns após a criação
+                getArmazens();
+            })
+            .catch(error => console.error('Erro ao criar armazém:', error));
+        }
+
+        function editArmazem(armazemId) {
+            const newNome = prompt('Digite o novo nome para o armazém:');
+            const newLocalizacao = prompt('Digite a nova localização para o armazém:');
+            const newCapacidade = prompt('Digite a nova capacidade para o armazém:');
+
+            if (newNome !== null && newLocalizacao !== null && newCapacidade !== null) {
+                const updatedArmazem = {
+                    nome: newNome,
+                    localizacao: newLocalizacao,
+                    capacidade: newCapacidade,
+                };
+
+                fetch(`${apiUrl}/${armazemId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedArmazem),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Armazém atualizado com sucesso!');
+                    getArmazens();
+                })
+                .catch(error => console.error('Erro ao atualizar armazém:', error));
+            }
+        }
+
+        function deleteArmazem(armazemId) {
+            const confirmDelete = confirm('Tem certeza de que deseja excluir este armazém?');
+
+            if (confirmDelete) {
+                fetch(`${apiUrl}/${armazemId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Armazém excluído com sucesso!');
+                    getArmazens();
+                })
+                .catch(error => console.error('Erro ao excluir armazém:', error));
+            }
+        }
+    </script>
+
+</body>
+</html>

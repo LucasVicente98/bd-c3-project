@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos Frontend</title>
+</head>
+<body>
+
+    <h1>Produtos</h1>
+
+    <button onclick="getProdutos()">Listar Produtos</button>
+
+    <div id="produtosList"></div>
+
+    <h2>Criar Novo Produto</h2>
+
+    <form onsubmit="postProduto(event)">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+        <br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" required>
+        <br>
+		<label for="valor">Valor:</label>
+        <input type="number" id="valor" required>
+        <br>
+        <label for="dataValidade">Data de Validade:</label>
+        <input type="date" id="dataValidade" required>
+        <br>
+        <label for="armazemId">ID do Armazém:</label>
+        <input type="text" id="armazemId" required>
+        <br>
+        <button type="submit">Criar Produto</button>
+    </form>
+
+    <script>
+        const apiUrl = 'http://localhost:4000/produto';
+
+        function getProdutos() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(produtos => {
+                    const produtosList = document.getElementById('produtosList');
+                    produtosList.innerHTML = '<h3>Lista de Produtos</h3>';
+                    
+                    produtos.forEach(produto => {
+                        const produtoDiv = document.createElement('div');
+                        produtoDiv.innerHTML = `
+                            <p><strong>Nome:</strong> ${produto.nome}</p>
+                            <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
+							<p><strong>Valor:</strong> ${produto.valor}</p>
+                            <p><strong>Data de Validade:</strong> ${produto.data_validade}</p>
+                            <p><strong>Armazém ID:</strong> ${produto.armazem_id ? produto.armazem_id.nome : 'Sem Armazém'}</p>
+                            <button onclick="editProduto('${produto._id}')">Editar</button>
+                            <button onclick="deleteProduto('${produto._id}')">Excluir</button>
+                            <hr>
+                        `;
+                        produtosList.appendChild(produtoDiv);
+                    });
+                })
+                .catch(error => console.error('Erro ao obter produtos:', error));
+        }
+
+        function postProduto(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const quantidade = document.getElementById('quantidade').value;
+			const valor = document.getElementById('valor').value;
+            const dataValidade = document.getElementById('dataValidade').value;
+            const armazemId = document.getElementById('armazemId').value;
+
+            const newProduto = {
+                nome,
+                quantidade,
+				valor,
+                data_validade: dataValidade,
+                armazem_id: armazemId,
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProduto),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Exibir mensagem de sucesso no HTML, se desejar
+                alert('Novo Produto criado com sucesso!');
+                // Atualizar a lista de produtos após a criação
+                getProdutos();
+            })
+            .catch(error => console.error('Erro ao criar produto:', error));
+        }
+
+        function editProduto(produtoId) {
+            const newNome = prompt('Digite o novo nome para o produto:');
+            const newQuantidade = prompt('Digite a nova quantidade para o produto:');
+			const newValor = prompt('Digite o valor atualizado do produto:');
+            const newDataValidade = prompt('Digite a nova data de validade para o produto:');
+
+            if (newNome !== null && newQuantidade !== null && newValor !== null && newDataValidade !== null) {
+                const updatedProduto = {
+                    nome: newNome,
+                    quantidade: newQuantidade,
+					valor: newValor,
+                    data_validade: newDataValidade,
+                };
+
+                fetch(`${apiUrl}/${produtoId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduto),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Produto atualizado com sucesso!');
+                    getProdutos();
+                })
+                .catch(error => console.error('Erro ao atualizar produto:', error));
+            }
+        }
+
+        function deleteProduto(produtoId) {
+            const confirmDelete = confirm('Tem certeza de que deseja excluir este produto?');
+
+            if (confirmDelete) {
+                fetch(`${apiUrl}/${produtoId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Produto excluído com sucesso!');
+                    getProdutos();
+                })
+                .catch(error => console.error('Erro ao excluir produto:', error));
+            }
+        }
+    </script>
+
+</body>
+</html>
