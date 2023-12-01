@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const produtoSchema = new mongoose.Schema({
     nome: String,
     quantidade: Number,
+    valor: Number,
     data_validade: Date,
     armazem_id: {
         type: mongoose.Schema.Types.ObjectId,

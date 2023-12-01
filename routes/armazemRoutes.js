@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const armazemController = require('../controllers/armazemController');
 
+router.get('/qtde-armazens', armazemController.qtdeArmazens);
 router.get('/', armazemController.getArmazens);
 router.post('/', armazemController.postArmazem);
 router.put('/:id', armazemController.putArmazem);

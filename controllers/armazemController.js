@@ -1,5 +1,14 @@
 const Armazem = require('../models/armazemModel');
 
+const qtdeArmazens = async (req, res) => {
+    try {
+        const totalArmazens = await Armazem.countDocuments();
+        res.json({ totalArmazens });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao contar os armazéns' });
+    }
+};
+
 const getArmazens = async (req, res) => {
     const armazens = await Armazem.find().populate('responsavel').exec();
     res.json(armazens);
@@ -26,4 +35,4 @@ const deleteArmazem = async (req, res) => {
     res.json(result);
 };
 
-module.exports = { getArmazens, postArmazem, putArmazem, deleteArmazem };
+module.exports = { qtdeArmazens, getArmazens, postArmazem, putArmazem, deleteArmazem };

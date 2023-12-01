@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
+
 const port = 4000;
 const mongoUrl = 'mongodb://127.0.0.1:27017';
 const dbName = 'armazem-logistico';
