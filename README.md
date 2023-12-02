@@ -106,7 +106,7 @@ O projeto faz uso das seguintes bibliotecas:
    node app.js
    ```
 
-6. Acesse a aplicação em [Clicando aqui](http://172.18.240.1:5500/bd-c3-front-end/menu_armazem.html).
+6. Acesse a aplicação [clicando aqui](http://172.18.240.1:5500/bd-c3-front-end/menu_armazem.html).
 
 ## Configurações Adicionais ⚙️
 
