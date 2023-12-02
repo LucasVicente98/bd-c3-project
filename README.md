@@ -6,7 +6,7 @@ Bem-vindo ao **Sistema de Gerenciamento de Armazém Logístico**! Este projeto, 
 
 **Diagrama ER**
 
-![Diagrama ER do projeto](.diagram\DIAGRAMA_ER_PROJETO_C3.jpeg)
+![Diagrama ER do projeto](https://github.com/LucasVicente98/bd-c3-project/raw/main/diagram/DIAGRAMA_ER_PROJETO_C3.jpeg)
 
 ## Estrutura do Projeto
 
