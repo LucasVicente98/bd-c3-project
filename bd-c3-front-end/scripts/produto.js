@@ -30,13 +30,13 @@ function postProduto(event) {
     const nome = document.getElementById('nome').value;
     const quantidade = document.getElementById('quantidade').value;
     const valor = document.getElementById('valor').value;
-    const armazemId = document.getElementById('armazemId').value;  // Obter o valor do ID do armazém
+    const armazemId = document.getElementById('armazemId').value;
 
     const newProduto = {
         nome,
         quantidade,
         valor,
-        armazem_id: armazemId,  // Usar o valor do ID do armazém
+        armazem_id: armazemId,
     };
 
     fetch(apiUrl, {
@@ -128,7 +128,7 @@ function getValorTotalPorArmazem() {
             valorTotalPorArmazemList.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.innerHTML = `
-                    <p><strong>Armazém:</strong> ${item._id.nome}</p>
+                    <p><strong>Armazém:</strong> ${item.armazem.nome}</p>
                     <p><strong>Valor Total:</strong> ${formatarReal(item.valorTotal)}</p>
                     <hr>
                 `;
@@ -137,6 +137,7 @@ function getValorTotalPorArmazem() {
         })
         .catch(error => console.error('Erro ao obter valor total por armazém:', error));
 }
+
 
 function getValorTotalProdutos() {
     fetch(`${apiUrl}/vlr-total-produtos`)

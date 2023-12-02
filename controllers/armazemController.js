@@ -1,5 +1,6 @@
 const Armazem = require('../models/armazemModel');
 
+// Obtém a quantidade total de armazéns
 const qtdeArmazens = async (req, res) => {
     try {
         const totalArmazens = await Armazem.countDocuments();
@@ -10,6 +11,7 @@ const qtdeArmazens = async (req, res) => {
     }
 };
 
+// Obtém todos os armazéns, incluindo informações do responsável
 const getArmazens = async (req, res) => {
     try {
         const armazens = await Armazem.find().populate('responsavel').exec();
@@ -20,6 +22,7 @@ const getArmazens = async (req, res) => {
     }
 };
 
+// Cria um novo armazém
 const postArmazem = async (req, res) => {
     try {
         const newArmazem = req.body;
@@ -31,11 +34,11 @@ const postArmazem = async (req, res) => {
     }
 };
 
+// Atualiza um armazém existente
 const putArmazem = async (req, res) => {
     try {
         const armazemId = req.params.id;
         const updatedArmazem = req.body;
-
         const result = await Armazem.findByIdAndUpdate(armazemId, { $set: updatedArmazem }, { new: true });
         res.json(result);
     } catch (error) {
@@ -44,6 +47,7 @@ const putArmazem = async (req, res) => {
     }
 };
 
+// Exclui um armazém existente
 const deleteArmazem = async (req, res) => {
     try {
         const armazemId = req.params.id;
