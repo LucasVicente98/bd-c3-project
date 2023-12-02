@@ -26,7 +26,7 @@ const getTotalArmazensPorResponsavel = async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'responsaveis', // Nome da coleção no MongoDB
+                    from: 'responsavels', // Nome correto da coleção no MongoDB
                     localField: '_id',
                     foreignField: '_id',
                     as: 'responsavel'
@@ -43,13 +43,13 @@ const getTotalArmazensPorResponsavel = async (req, res) => {
             }
         ]);
 
-        console.log(resultado); // Adiciona este log para visualizar o resultado no console
         res.json(resultado);
     } catch (error) {
-        console.error(error); // Adiciona este log para visualizar o erro no console
+        console.error(error);
         res.status(500).json({ error: 'Erro ao calcular total de armazéns por responsável' });
     }
 };
+
 
 const postResponsavel = async (req, res) => {
     const newResponsavel = req.body;

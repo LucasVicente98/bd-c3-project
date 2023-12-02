@@ -54,20 +54,9 @@ const mediaPrecoProdutosPorArmazem = async (req, res) => {
     try {
         const resultado = await Produto.aggregate([
             {
-                $match: {
-                    armazem_id: { $ne: null }
-                }
-            },
-            {
-                $group: {
-                    _id: '$armazem_id',
-                    mediaPreco: { $avg: '$valor' }
-                }
-            },
-            {
                 $lookup: {
-                    from: 'armazens',
-                    localField: '_id',
+                    from: 'armazems',  // Corrigido para 'armazems'
+                    localField: 'armazem_id',
                     foreignField: '_id',
                     as: 'armazem'
                 }
@@ -76,21 +65,30 @@ const mediaPrecoProdutosPorArmazem = async (req, res) => {
                 $unwind: '$armazem'
             },
             {
+                $group: {
+                    _id: '$armazem._id',
+                    mediaPreco: { $avg: '$valor' },
+                    armazem: { $first: '$armazem' }
+                }
+            },
+            {
                 $project: {
-                    armazem: '$armazem.nome',
-                    mediaPreco: 1
+                    armazem_id: '$_id',
+                    mediaPreco: 1,
+                    'armazem._id': 1,
+                    'armazem.nome': 1,
+                    _id: 0
                 }
             }
         ]);
 
-        console.log('Resultado:', resultado); // Adicione esta linha para verificar o resultado no console
-
         res.json(resultado);
     } catch (error) {
-        console.error('Erro:', error); // Adicione esta linha para verificar o erro no console
+        console.error('Erro:', error);
         res.status(500).json({ error: 'Erro ao calcular média de preço dos produtos por armazém' });
     }
 };
+
 
 const getProdutos = async (req, res) => {
     const produtos = await Produto.find().populate('armazem_id').exec();

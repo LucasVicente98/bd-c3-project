@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armazém Frontend</title>
+    <link rel="stylesheet" href="./style/styles.css">
 </head>
+
 <body>
 
-    <h1>Armazéns</h1>
+    <header>
+        <a href="menu_armazem.html" style="display: flex; align-items: center; text-decoration: none;">
+            <button>Voltar ao menu principal</button>
+        </a>
+        <h1>Armazéns</h1>
+    </header>
 
-    <button onclick="getArmazens()">Listar Armazéns</button>
+    <section id="listarArmazens">
+        <button onclick="getArmazens()">Listar Armazéns</button>
+        <div id="armazensList" style="display: none;"></div>
+    </section>
 
-    <div id="armazensList"></div>
+    <section id="criarArmazem">
+        <h2>Criar Novo Armazém</h2>
+        <form onsubmit="postArmazem(event)">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required>
+            <br>
+            <label for="localizacao">Localização:</label>
+            <input type="text" id="localizacao" required>
+            <br>
+            <label for="capacidade">Capacidade:</label>
+            <input type="number" id="capacidade" required>
+            <br>
+            <label for="responsavelId">ID do Responsável:</label>
+            <input type="text" id="responsavelId" required>
+            <br>
+            <button type="submit">Criar Armazém</button>
+        </form>
+    </section>
 
-    <h2>Criar Novo Armazém</h2>
-
-    <form onsubmit="postArmazem(event)">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" required>
-        <br>
-        <label for="localizacao">Localização:</label>
-        <input type="text" id="localizacao" required>
-        <br>
-        <label for="capacidade">Capacidade:</label>
-        <input type="number" id="capacidade" required>
-        <br>
-        <label for="responsavelId">ID do Responsável:</label>
-        <input type="text" id="responsavelId" required>
-        <br>
-        <button type="submit">Criar Armazém</button>
-    </form>
+    <section id="estatisticas">
+        <h2>Estatísticas</h2>
+        <div id="qtdeArmazens"></div>
+    </section>
 
     <script>
         const apiUrl = 'http://localhost:4000/armazem';
@@ -41,7 +56,7 @@
                 .then(armazens => {
                     const armazensList = document.getElementById('armazensList');
                     armazensList.innerHTML = '<h3>Lista de Armazéns</h3>';
-                    
+
                     armazens.forEach(armazem => {
                         const armazemDiv = document.createElement('div');
                         armazemDiv.innerHTML = `
@@ -55,6 +70,9 @@
                         `;
                         armazensList.appendChild(armazemDiv);
                     });
+
+                    // Exibir a lista
+                    armazensList.style.display = 'block';
                 })
                 .catch(error => console.error('Erro ao obter armazéns:', error));
         }
@@ -81,14 +99,13 @@
                 },
                 body: JSON.stringify(newArmazem),
             })
-            .then(response => response.json())
-            .then(data => {
-                // Exibir mensagem de sucesso no HTML, se desejar
-                alert('Novo Armazém criado com sucesso!');
-                // Atualizar a lista de armazéns após a criação
-                getArmazens();
-            })
-            .catch(error => console.error('Erro ao criar armazém:', error));
+                .then(response => response.json())
+                .then(data => {
+                    alert('Novo Armazém criado com sucesso!');
+                    getArmazens();
+                    getQtdeArmazens();
+                })
+                .catch(error => console.error('Erro ao criar armazém:', error));
         }
 
         function editArmazem(armazemId) {
@@ -110,12 +127,12 @@
                     },
                     body: JSON.stringify(updatedArmazem),
                 })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Armazém atualizado com sucesso!');
-                    getArmazens();
-                })
-                .catch(error => console.error('Erro ao atualizar armazém:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Armazém atualizado com sucesso!');
+                        getArmazens();
+                    })
+                    .catch(error => console.error('Erro ao atualizar armazém:', error));
             }
         }
 
@@ -126,15 +143,30 @@
                 fetch(`${apiUrl}/${armazemId}`, {
                     method: 'DELETE',
                 })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Armazém excluído com sucesso!');
-                    getArmazens();
-                })
-                .catch(error => console.error('Erro ao excluir armazém:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Armazém excluído com sucesso!');
+                        getArmazens();
+                        getQtdeArmazens();
+                    })
+                    .catch(error => console.error('Erro ao excluir armazém:', error));
             }
         }
+
+        function getQtdeArmazens() {
+            fetch(`${apiUrl}/qtde-armazens`)
+                .then(response => response.json())
+                .then(data => {
+                    const qtdeArmazensDiv = document.getElementById('qtdeArmazens');
+                    qtdeArmazensDiv.innerHTML = `<p><strong>Quantidade Total de Armazéns Cadastrados:</strong> ${data.totalArmazens}</p>`;
+                })
+                .catch(error => console.error('Erro ao obter quantidade total de armazéns:', error));
+        }
+
+        // Chamar as funções ao carregar a página
+        getQtdeArmazens();
     </script>
 
 </body>
+
 </html>
