@@ -1,11 +1,16 @@
 const Produto = require('../models/produtoModel');
 
+const handleError = (res, message, error) => {
+    console.error(`Erro: ${message}`, error);
+    res.status(500).json({ error: message });
+};
+
 const qtdeProdutos = async (req, res) => {
     try {
         const totalProdutos = await Produto.countDocuments();
         res.json({ totalProdutos });
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao contar produtos' });
+        handleError(res, 'Erro ao contar produtos', error);
     }
 };
 
@@ -21,10 +26,9 @@ const valorTotalProdutos = async (req, res) => {
         ]);
 
         const valorTotal = resultado.length > 0 ? resultado[0].valorTotal : 0;
-
         res.json({ valorTotal });
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao calcular valor total' });
+        handleError(res, 'Erro ao calcular valor total', error);
     }
 };
 
@@ -46,7 +50,7 @@ const valorTotalProdutosPorArmazem = async (req, res) => {
 
         res.json(resultado);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao calcular valor total por armazém' });
+        handleError(res, 'Erro ao calcular valor total por armazém', error);
     }
 };
 
@@ -55,7 +59,7 @@ const mediaPrecoProdutosPorArmazem = async (req, res) => {
         const resultado = await Produto.aggregate([
             {
                 $lookup: {
-                    from: 'armazems',  // Corrigido para 'armazems'
+                    from: 'armazens',
                     localField: 'armazem_id',
                     foreignField: '_id',
                     as: 'armazem'
@@ -84,37 +88,59 @@ const mediaPrecoProdutosPorArmazem = async (req, res) => {
 
         res.json(resultado);
     } catch (error) {
-        console.error('Erro:', error);
-        res.status(500).json({ error: 'Erro ao calcular média de preço dos produtos por armazém' });
+        handleError(res, 'Erro ao calcular média de preço por armazém', error);
     }
 };
 
-
 const getProdutos = async (req, res) => {
-    const produtos = await Produto.find().populate('armazem_id').exec();
-    res.json(produtos);
+    try {
+        const produtos = await Produto.find().populate('armazem_id').exec();
+        res.json(produtos);
+    } catch (error) {
+        handleError(res, 'Erro ao obter produtos', error);
+    }
 };
 
-
 const postProduto = async (req, res) => {
-    const newProduto = req.body;
-    const result = await Produto.create(newProduto);
-    res.json(result);
+    try {
+        const newProduto = req.body;
+        const result = await Produto.create(newProduto);
+        res.json(result);
+    } catch (error) {
+        handleError(res, 'Erro ao criar um novo produto', error);
+    }
 };
 
 const putProduto = async (req, res) => {
-    const produtoId = req.params.id;
-    const updatedProduto = req.body;
+    try {
+        const produtoId = req.params.id;
+        const updatedProduto = req.body;
 
-    const result = await Produto.findByIdAndUpdate(produtoId, { $set: updatedProduto }, { new: true });
-    res.json(result);
+        const result = await Produto.findByIdAndUpdate(produtoId, { $set: updatedProduto }, { new: true });
+        res.json(result);
+    } catch (error) {
+        handleError(res, 'Erro ao atualizar produto', error);
+    }
 };
 
 const deleteProduto = async (req, res) => {
-    const produtoId = req.params.id;
+    try {
+        const produtoId = req.params.id;
 
-    const result = await Produto.findByIdAndDelete(produtoId);
-    res.json(result);
+        const result = await Produto.findByIdAndDelete(produtoId);
+        res.json(result);
+    } catch (error) {
+        handleError(res, 'Erro ao excluir produto', error);
+    }
 };
 
-module.exports = { qtdeProdutos, valorTotalProdutosPorArmazem, mediaPrecoProdutosPorArmazem, valorTotalProdutos, getProdutos, postProduto, putProduto, deleteProduto };
+module.exports = {
+    qtdeProdutos,
+    valorTotalProdutosPorArmazem,
+    mediaPrecoProdutosPorArmazem,
+    valorTotalProdutos,
+    getProdutos,
+    postProduto,
+    putProduto,
+    deleteProduto
+};

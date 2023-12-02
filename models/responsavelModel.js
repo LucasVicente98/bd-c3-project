@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 
 const responsavelSchema = new mongoose.Schema({
-    nome: String,
-    telefone: String
+    nome: {
+        type: String,
+        required: true,
+        trim: true // Remove espaços em branco no início e no final
+    },
+    telefone: {
+        type: String,
+        trim: true
+    }
 });
 
-const Responsavel = mongoose.model('Responsavel', responsavelSchema);
+responsavelSchema.statics.findByNome = function (nome) {
+    return this.findOne({ nome: nome });
+};
+
+const Responsavel = mongoose.model('responsaveis', responsavelSchema);
 
 module.exports = Responsavel;
