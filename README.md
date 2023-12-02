@@ -4,6 +4,10 @@
 
 Bem-vindo ao **Sistema de Gerenciamento de Armazém Logístico**! Este projeto, desenvolvido em Node.js, Express.js e MongoDB, visa simplificar o cadastro, consulta, atualização e exclusão de responsáveis, armazéns e produtos, proporcionando uma gestão eficiente do estoque.
 
+**Diagrama ER**
+
+![Diagrama ER do projeto](.diagram\DIAGRAMA_ER_PROJETO_C3.jpeg)
+
 ## Estrutura do Projeto
 
 ### Controllers 🎮
