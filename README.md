@@ -41,18 +41,25 @@ O ponto de entrada da aplicação, onde são configurados o servidor Express, a 
    - **`POST /responsavel`**: Cadastra um novo responsável.
    - **`PUT /responsavel/:id`**: Atualiza informações de um responsável pelo ID.
    - **`DELETE /responsavel/:id`**: Exclui um responsável pelo ID.
+   - **`GET /responsavel/qtde-responsaveis`**: Retorna o total de responsáveis cadastrados.
 
 2. **Armazéns:**
    - **`GET /armazem`**: Obtém a lista de armazéns com informações detalhadas do responsável associado.
    - **`POST /armazem`**: Cadastra um novo armazém.
    - **`PUT /armazem/:id`**: Atualiza informações de um armazém pelo ID.
    - **`DELETE /armazem/:id`**: Exclui um armazém pelo ID.
+   - **`GET /armazem/qtde-armazens`**: Retorna o total de armazéns cadastrados.
+   - **`GET /armazem/:id`**: Retorna as informações de um armazém pelo ID.
 
 3. **Produtos:**
    - **`GET /produto`**: Obtém a lista de produtos com informações detalhadas do armazém associado.
    - **`POST /produto`**: Cadastra um novo produto.
    - **`PUT /produto/:id`**: Atualiza informações de um produto pelo ID.
    - **`DELETE /produto/:id`**: Exclui um produto pelo ID.
+   - **`GET /produto/qtde-produtos`**: Retorna o total de produtos cadastrados.
+   - **`GET /produto/vlr-total-produtos`**: Retorna o valor total de todos os produtos.
+   - **`GET /produto/media-preco-por-armazem`**: Retorna a média de preço dos produtos por armazém.
+   - **`GET /produto/vlr-total-produtos-por-armazem`**: Retorna o valor total dos produtos por armazém.
 
 ## Bibliotecas Utilizadas 📚
 
@@ -101,4 +108,6 @@ O projeto faz uso das seguintes bibliotecas:
 
 Certifique-se de ter o MongoDB em execução localmente na porta padrão (27017) ou ajuste a URL de conexão no arquivo `app.js` conforme necessário. O sistema utiliza o Express.js para criar a API e o Mongoose como ODM para interagir com o MongoDB.
 
-Sinta-se à vontade para explorar e adaptar o código conforme necessário para atender aos requisitos específicos do seu projeto. Para mais informações sobre as bibliotecas utilizadas, consulte a documentação oficial do [Express.js](https://expressjs.com/), [Body-parser](https://www.npmjs.com/package/body-parser) e [Mongoose](https://mongoosejs.com/).
+Sinta-se à vontade
+
+ para explorar e adaptar o código conforme necessário para atender aos requisitos específicos do seu projeto. Para mais informações sobre as bibliotecas utilizadas, consulte a documentação oficial do [Express.js](https://expressjs.com/), [Body-parser](https://www.npmjs.com/package/body-parser) e [Mongoose](https://mongoosejs.com/).
