@@ -106,7 +106,7 @@ O projeto faz uso das seguintes bibliotecas:
    node app.js
    ```
 
-6. Acesse a aplicação em [http://localhost:4000](http://localhost:4000).
+6. Acesse a aplicação em [http://localhost:4000]([http://localhost:4000](http://172.18.240.1:5500/bd-c3-front-end/menu_armazem.html)).
 
 ## Configurações Adicionais ⚙️
 
