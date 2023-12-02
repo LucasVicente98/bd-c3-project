@@ -108,6 +108,58 @@ O projeto faz uso das seguintes bibliotecas:
 
 6. Acesse a aplicação [clicando aqui](http://172.18.240.1:5500/bd-c3-front-end/menu_armazem.html).
 
+## Imagens de Execução do Sistema
+
+### Tela Inicial
+
+![Tela Inicial](imagens_projeto/tela_inicial.jpeg)
+
+### Página Armazém
+
+![Página Armazém](imagens_projeto/armazem.jpeg)
+
+
+
+### Listagem Armazéns, opção de editar e excluir
+
+![Listagem de Armazéns](imagens_projeto/armazem_listagem.jpeg)
+
+
+
+### Editar Armazém - Novo nome
+
+![Novo nome do Armazém](imagens_projeto/edit_armazem.jpeg)
+
+
+
+### Editar Armazém - Nova Localização
+
+![Nova Localizacao](imagens_projeto/edit_armazem_2.jpeg)
+
+
+
+### Editar Armazém - Nova Capacidade
+
+![Tela Inicial](imagens_projeto/edit_armazem_3.jpeg)
+
+
+
+### Edição Finalizada
+
+![Armazém Atualizado](imagens_projeto/edit_armazem_4.jpeg)
+
+
+
+### Cadastro Novo Armazém - Formulário
+
+![Cadastrando Armazém](imagens_projeto/add_armazem.jpeg)
+
+
+
+### Cadastro Novo Armazém - Cadastro realizado
+
+![Cadastro Realizado](imagens_projeto/add_armazem_2.jpeg)
+
 ## Configurações Adicionais ⚙️
 
 Certifique-se de ter o MongoDB em execução localmente na porta padrão (27017) ou ajuste a URL de conexão no arquivo `app.js` conforme necessário. O sistema utiliza o Express.js para criar a API e o Mongoose como ODM para interagir com o MongoDB.
