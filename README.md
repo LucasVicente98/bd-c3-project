@@ -108,6 +108,8 @@ O projeto faz uso das seguintes bibliotecas:
 
 6. Acesse a aplicação [clicando aqui](http://172.18.240.1:5500/bd-c3-front-end/menu_armazem.html).
 
+7. Para ver o vídeo de demonstração do projeto [clique aqui](https://drive.google.com/drive/folders/1yOJTXeb95IHxCjcHBokigd0MarXXdkTf?usp=drive_link).
+
 ## Imagens de Execução do Sistema
 
 ### Tela Inicial
